@@ -5,7 +5,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 from starlette.exceptions import HTTPException
 
-from server.lib.response import redirect
+from server.utils.response import redirect
 from server.utils import forms, templates
 from server.apps.word.forms import WordForm
 from server.apps.word.models import Word

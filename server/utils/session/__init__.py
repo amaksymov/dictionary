@@ -5,7 +5,7 @@ from starlette.responses import Response
 
 from server.apps.auth.models import User
 from server.settings import SECRET_KEY, SESSION_MAX_AGE, SESSION_NAME
-from server.lib.session.exceptions import SessionError
+from server.utils.session.exceptions import SessionError
 
 log = logging.getLogger()
 

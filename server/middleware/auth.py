@@ -8,8 +8,8 @@ from starlette.responses import Response
 from starlette.requests import Request
 from starlette.applications import Starlette
 
-from server.lib.session import Session
-from server.lib.session.exceptions import SessionError
+from server.utils.session import Session
+from server.utils.session.exceptions import SessionError
 
 
 class AuthMiddleware(BaseHTTPMiddleware):

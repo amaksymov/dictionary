@@ -11,7 +11,7 @@ from server.apps.learn.bl import get_next_repeat
 from server.apps.learn.forms import LearnForm
 from server.apps.learn.models import AnswerHistory
 from server.apps.word.models import Word
-from server.lib.response import redirect
+from server.utils.response import redirect
 from server.utils import templates, forms
 
 
