@@ -1,0 +1,32 @@
+{% extends "base.jinja2" %}
+{% block title %}Welcome!{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+{% block content %}
+  <div>
+    {% if errors %}
+      <ul>
+        {% for value in errors.values() %}
+          <li>
+            {{ value }}
+          </li>
+        {% endfor %}
+      </ul>
+    {% endif %}
+    <form method="POST">
+      {{ form }}
+      {% if is_editing %}
+        <button type="submit" class="btn btn-outline-primary">Update</button>
+      {% else %}
+        <button type="submit" class="btn btn-outline-primary">Create</button>
+      {% endif %}
+    </form>
+
+    {% if is_editing %}
+    <div style="margin-top: 1em">
+      {% include 'word/delete.jinja2' %}
+    </div>
+    {% endif %}
+  </div>
+{% endblock %}

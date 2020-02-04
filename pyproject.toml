@@ -1,0 +1,30 @@
+[tool.poetry]
+name = "dictionary"
+version = "0.1.0"
+description = ""
+authors = ["Andrii Maksymov <maksymov@tutanota.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+starlette = "^0.13.1"
+uvicorn = "^0.11.2"
+sqlalchemy = "^1.3.13"
+alembic = "^1.3.3"
+bootstrap4 = "^0.1.0"
+databases = {extras = ["postgres"], version = "^0.2.6"}
+orm = "^0.1.5"
+asyncpg = "^0.20.1"
+aiofiles = "^0.4.0"
+jinja2 = "^2.11.1"
+psycopg2-binary = "^2.8.4"
+python-multipart = "^0.0.5"
+requests = "^2.22.0"
+httpx = "^0.11.1"
+itsdangerous = "^1.1.0"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

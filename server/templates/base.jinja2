@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>The Dictionary | {% block title %}{% endblock %}</title>
+  <link href="{{ url_for('static', path='/css/bootstrap.min.css') }}" rel="stylesheet">
+<body>
+  {% include 'navbar.jinja2' %}
+  <div class="container" style="margin-top: 1em">
+    {% block content %}{% endblock %}
+  </div>
+  <div id="footer">{% block footer %}{% endblock %}</div>
+  {% block script %}
+    <script src="{{ url_for('static', path='js/jquery-3.2.1.slim.min.js') }}" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', path='js/bootstrap.js') }}"></script>
+  {% endblock %}
+</body>
+</html>

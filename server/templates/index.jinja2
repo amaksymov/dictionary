@@ -1,0 +1,10 @@
+{% extends "base.jinja2" %}
+{% block title %}Welcome!{% endblock %}
+{% block head %}
+    {{ super() }}
+{% endblock %}
+{% block content %}
+  {% include 'dictionary/list.jinja2' %}
+  <h1>Add new word</h1>
+  {% include 'dictionary/form.jinja2' %}
+{% endblock %}

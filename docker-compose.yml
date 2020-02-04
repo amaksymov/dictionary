@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+  db:
+    image: postgres:11
+    restart: unless-stopped
+    volumes:
+      - db_dictionary:/data/db
+    networks:
+      - webnet
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=dictionary
+    ports:
+      - "5432:5432"
+
+  server:
+    build:
+      context: .
+      dockerfile: ./docker/server/Dockerfile
+    environment:
+      - DEBUG=1
+    volumes:
+      - ./server:/app/server
+      - ./.env:/app/.env
+      - ./asgi.py:/app/asgi.py
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    networks:
+      - webnet
+    command: uvicorn asgi:app --host 0.0.0.0 --port 8000 --debug
+
+networks:
+  webnet:
+
+volumes:
+  db_dictionary:

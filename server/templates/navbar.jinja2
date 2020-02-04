@@ -1,0 +1,40 @@
+{% block navbar %}
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <a class="navbar-brand" href="{{ url_for('index') }}">Dictionary</a>
+
+      <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+          <li class="nav-item {{ 'active' if request.path == '/' }}">
+            <a class="nav-link" href="{{ url_for('index') }}">Home</a>
+          </li>
+          <li class="nav-item {{ 'active' if request.path == '/learn/' }}">
+            <a class="nav-link" href="{{ url_for('learn:index') }}">Learn</a>
+          </li>
+          <li class="nav-item {{ 'active' if request.path == '/w/create/' }}">
+            <a class="nav-link" href="{{ url_for('word:create') }}">Create</a>
+          </li>
+        </ul>
+        {% if request.user %}
+          <div class="dropdown">
+            <button class="btn btn-outline-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              {{ request.user.username }}
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <form class="form-inline " action="{{ url_for('auth:logout') }}" method="POST">
+                <button class="btn btn-link" type="submit">Logout</button>
+              </form>
+            </div>
+          </div>
+        {% else %}
+          <form class="form-inline my-2 my-lg-0" action="{{ url_for('auth:login') }}" method="POST">
+            <button class="btn btn-link" type="submit">Login</button>
+          </form>
+        {% endif %}
+        </div>
+    </div>
+  </nav>
+{% endblock %}

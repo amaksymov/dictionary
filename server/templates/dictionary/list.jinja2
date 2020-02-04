@@ -1,0 +1,26 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Word</th>
+    <th scope="col">Translate</th>
+  </tr>
+  </thead>
+  <tbody>
+  {% for word in words %}
+    <tr>
+      <th scope="row">
+        <a class="" href="{{ url_for('word:edit', word_id=word.id) }}">{{ word.id }}</a>
+      </th>
+      <td>{{ word.value }}</td>
+      <td>{{ word.translate }}</td>
+    </tr>
+  {% else %}
+    <tr>
+      <th scope="row">1</th>
+      <td>null</td>
+      <td>null</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
