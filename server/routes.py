@@ -20,8 +20,8 @@ def setup_routes(app: Starlette):
         Mount('/learn', name='learn', app=Router([
             Route('/', endpoint=learn_word,
                   methods=['GET'], name='index'),
-            Route('/{word_id:int}', endpoint=learned_word,
-                  methods=['POST'], name='learned'),
+            Route('/{word_id:int}/{answer:int}', endpoint=learned_word,
+                  methods=['GET'], name='learned'),
         ])),
         Mount('/w', name='word', app=Router([
             Route('/create', endpoint=word_create,

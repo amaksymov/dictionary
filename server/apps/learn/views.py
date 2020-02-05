@@ -8,7 +8,7 @@ from starlette.responses import Response, RedirectResponse
 from starlette.requests import Request
 
 from server.apps.learn.bl import get_next_repeat
-from server.apps.learn.forms import LearnForm
+from server.apps.learn.forms import ANSWERS
 from server.apps.learn.models import AnswerHistory
 from server.apps.word.models import Word
 from server.utils.auth import LoginRequired
@@ -24,18 +24,11 @@ async def learn_word(request: Request) -> Response:
 
     if words:
         word = choice(words)
-        from logging import warning
-        warning(word)
-        warning(word)
-        warning(word)
-        warning(word.repeat)
-        warning(word)
     else:
         word = None
-
     return templates.TemplateResponse('learn/index.jinja2', {
         'word': word,
-        'form': forms.Form(LearnForm),
+        'answers': ANSWERS,
         'request': request,
     })
 
@@ -49,22 +42,20 @@ async def learned_word(request: Request) -> Response:
     except NoMatch:
         raise HTTPException(HTTPStatus.NOT_FOUND)
 
-    if request.method == 'POST':
-        payload = await request.form()
-        if answer := payload.get('answer'):
-            if answer in ['0', '1', '2', '3', '4', '5']:
-                await AnswerHistory.objects.create(
-                    answer=int(answer),
-                    word=word,
-                )
-                answers = await (
-                    AnswerHistory.objects.filter(word__id=word.id).all()
-                )
-                repeat = get_next_repeat(answers)
-                await word.update(
-                    repeat=repeat,
-                )
-
+    if answer := request.path_params.get('answer'):
+        if answer in map(lambda x: x.answer, ANSWERS):
+            await AnswerHistory.objects.create(
+                answer=answer,
+                word=word,
+            )
+            answers = await (
+                AnswerHistory.objects.filter(word__id=word.id).all()
+            )
+            print(answers)
+            repeat = get_next_repeat(answers)
+            await word.update(
+                repeat=repeat,
+            )
     return RedirectResponse(
         request.url_for('learn:index'),
         status_code=HTTPStatus.MOVED_PERMANENTLY,

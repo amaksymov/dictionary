@@ -16,11 +16,12 @@
       <div class="modal-body">
         {{ word.translate }}
       </div>
-      <div class="modal-footer">
-        <form action="{{ url_for('learn:learned', word_id=word.id) }}" method="POST">
-          {{ form }}
-          <button type="submit" class="btn btn-success">Success</button>
-        </form>
+      <div class="d-flex justify-content-center modal-footer">
+        <div class="d-flex justify-content-center flex-column bd-highlight mb-3">
+          {% for a in answers[::-1] %}
+            <a href="{{ url_for('learn:learned', word_id=word.id, answer=a.answer) }}" class="btn btn-{{ a.btn_type.value }} btn-lg active" role="button" aria-pressed="true" style="margin: 0.1em">{{ a.text }}</a>
+          {% endfor %}
+        </div>
       </div>
     </div>
   </div>
