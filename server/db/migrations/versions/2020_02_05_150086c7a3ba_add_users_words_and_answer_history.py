@@ -1,8 +1,8 @@
-"""Add users, words and answer_history tables
+"""Add users, words. and answer_history
 
-Revision ID: 4978d39b1966
+Revision ID: 150086c7a3ba
 Revises: 
-Create Date: 2020-02-04 20:54:10.231882
+Create Date: 2020-02-05 20:02:30.439407
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '4978d39b1966'
+revision = '150086c7a3ba'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -37,8 +37,9 @@ def upgrade():
     sa.Column('created_date', sa.DateTime(), nullable=False),
     sa.Column('repeat', sa.DateTime(), nullable=False),
     sa.Column('done', sa.Boolean(), nullable=False),
-    sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('value')
+    sa.Column('user', sa.Integer(), nullable=False),
+    sa.ForeignKeyConstraint(['user'], ['users.id'], ),
+    sa.PrimaryKeyConstraint('id')
     )
     op.create_index(op.f('ix_words_id'), 'words', ['id'], unique=False)
     op.create_table('answer_history',

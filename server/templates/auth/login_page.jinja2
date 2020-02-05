@@ -1,0 +1,18 @@
+{% extends "base.jinja2" %}
+{% block title %}Login page{% endblock %}
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+{% block navbar %}{% endblock %}
+
+{% block content %}
+  {% if message %}
+    <h1>{{ message }}</h1>
+  {% endif %}
+  <div class="d-flex justify-content-center">
+    <form class="form-inline my-2 my-lg-0" action="{{ url_for('auth:login') }}" method="POST">
+      <button class="btn btn-link" type="submit">GitHub Login</button>
+    </form>
+  </div>
+{% endblock %}

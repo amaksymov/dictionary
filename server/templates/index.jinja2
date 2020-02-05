@@ -4,7 +4,11 @@
     {{ super() }}
 {% endblock %}
 {% block content %}
-  {% include 'dictionary/list.jinja2' %}
-  <h1>Add new word</h1>
-  {% include 'dictionary/form.jinja2' %}
+  {% if request.user %}
+    {% include 'dictionary/list.jinja2' %}
+    <h1>Add new word</h1>
+    {% include 'word/form.jinja2' %}
+  {% else %}
+    <h1>Login pls!</h1>
+  {% endif %}
 {% endblock %}

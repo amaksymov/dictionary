@@ -2,15 +2,16 @@ from http import HTTPStatus
 
 from orm import NoMatch
 from starlette.requests import Request
-from starlette.responses import Response
+from starlette.responses import Response, RedirectResponse
 from starlette.exceptions import HTTPException
 
-from server.utils.response import redirect
+from server.utils.auth import LoginRequired
 from server.utils import forms, templates
 from server.apps.word.forms import WordForm
 from server.apps.word.models import Word
 
 
+@LoginRequired()
 async def word_form(request: Request) -> Response:
     form = forms.Form(WordForm)
     errors = {}
@@ -30,9 +31,13 @@ async def word_form(request: Request) -> Response:
                 'errors': errors,
                 'request': request,
             })
-        await Word.objects.create(**word_raw)
-        return redirect(
-            url=request.url_for('index'),
+        await Word.objects.create(
+            **word_raw,
+            user=request.user
+        )
+        return RedirectResponse(
+            request.url_for('index'),
+            status_code=HTTPStatus.MOVED_PERMANENTLY,
         )
 
     return templates.TemplateResponse('index.jinja2', {
@@ -43,6 +48,7 @@ async def word_form(request: Request) -> Response:
     })
 
 
+@LoginRequired()
 async def word_edit(request: Request) -> Response:
     errors = {}
     is_editing = True
@@ -52,6 +58,8 @@ async def word_edit(request: Request) -> Response:
         raise HTTPException(HTTPStatus.NOT_FOUND)
     try:
         word = await Word.objects.get(id=word_id)
+        if word.user.pk != request.user.id:
+            raise NoMatch
     except NoMatch:
         raise HTTPException(HTTPStatus.NOT_FOUND)
 
@@ -64,7 +72,7 @@ async def word_edit(request: Request) -> Response:
         })
         if word_errors:
             form = forms.Form(WordForm, values=word_raw, errors=word_errors)
-            return templates.TemplateResponse('word/form.jinja2', {
+            return templates.TemplateResponse('word/edit.jinja2', {
                 'form': form,
                 'word': word,
                 'is_editing': is_editing,
@@ -72,11 +80,12 @@ async def word_edit(request: Request) -> Response:
                 'request': request,
             })
         await word.update(**word_raw)
-        return redirect(
-            request.url_for('word:edit', word_id=word.id)
+        return RedirectResponse(
+            request.url_for('word:edit', word_id=word.id),
+            status_code=HTTPStatus.MOVED_PERMANENTLY,
         )
 
-    return templates.TemplateResponse('word/form.jinja2', {
+    return templates.TemplateResponse('word/edit.jinja2', {
         'form': form,
         'word': word,
         'is_editing': is_editing,
@@ -85,19 +94,24 @@ async def word_edit(request: Request) -> Response:
     })
 
 
+@LoginRequired()
 async def word_delete(request: Request) -> Response:
     if request.method == 'POST':
         word_id = request.path_params.get('word_id')
         try:
             word = await Word.objects.get(id=word_id)
+            if word.user.pk != request.user.id:
+                raise NoMatch
         except NoMatch:
             raise HTTPException(HTTPStatus.NOT_FOUND)
         await word.delete()
-    return redirect(
-        request.url_for('index')
+    return RedirectResponse(
+        request.url_for('index'),
+        status_code=HTTPStatus.MOVED_PERMANENTLY,
     )
 
 
+@LoginRequired()
 async def word_create(request: Request) -> Response:
     form = forms.Form(WordForm)
     errors = {}
@@ -114,9 +128,13 @@ async def word_create(request: Request) -> Response:
                 'errors': errors,
                 'request': request,
             })
-        await Word.objects.create(**word_raw)
-        return redirect(
+        await Word.objects.create(
+            **word_raw,
+            user=request.user
+        )
+        return RedirectResponse(
             url=request.url_for('index'),
+            status_code=HTTPStatus.MOVED_PERMANENTLY,
         )
 
     return templates.TemplateResponse('word/create.jinja2', {

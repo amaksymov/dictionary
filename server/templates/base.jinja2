@@ -8,7 +8,9 @@
   <title>The Dictionary | {% block title %}{% endblock %}</title>
   <link href="{{ url_for('static', path='/css/bootstrap.min.css') }}" rel="stylesheet">
 <body>
-  {% include 'navbar.jinja2' %}
+  {% block navbar %}
+    {% include 'navbar.jinja2' %}
+  {% endblock %}
   <div class="container" style="margin-top: 1em">
     {% block content %}{% endblock %}
   </div>

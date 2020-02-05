@@ -1,6 +1,6 @@
 {% extends "base.jinja2" %}
-{% block title %}Add new word | Welcome!{% endblock %}
+{% block title %}Edit {{ word.value }}{% endblock %}
+
 {% block content %}
-  <h1>Add new word</h1>
   {% include 'word/form.jinja2' %}
 {% endblock %}

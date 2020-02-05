@@ -9,6 +9,7 @@ from starlette.datastructures import URL
 
 from server import settings
 from server.apps.auth.models import User
+from server.utils import templates
 
 
 async def login(request):
@@ -78,3 +79,10 @@ async def callback(request):
     request.scope['session']['user_id'] = user.id
     url = request.url_for('index')
     return RedirectResponse(url, status_code=HTTPStatus.SEE_OTHER)
+
+
+async def login_page(request: Request) -> Response:
+    next_url = request.query_params.get('next_url')
+    return templates.TemplateResponse('auth/login_page.jinja2', {
+        'request': request,
+    })

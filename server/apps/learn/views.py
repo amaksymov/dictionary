@@ -4,17 +4,18 @@ from random import choice
 
 from orm import NoMatch
 from starlette.exceptions import HTTPException
-from starlette.responses import Response
+from starlette.responses import Response, RedirectResponse
 from starlette.requests import Request
 
 from server.apps.learn.bl import get_next_repeat
 from server.apps.learn.forms import LearnForm
 from server.apps.learn.models import AnswerHistory
 from server.apps.word.models import Word
-from server.utils.response import redirect
+from server.utils.auth import LoginRequired
 from server.utils import templates, forms
 
 
+@LoginRequired()
 async def learn_word(request: Request) -> Response:
     now = datetime.now()
     words = await (
@@ -39,6 +40,7 @@ async def learn_word(request: Request) -> Response:
     })
 
 
+@LoginRequired()
 async def learned_word(request: Request) -> Response:
     word_id = request.path_params.get('word_id')
 
@@ -62,6 +64,8 @@ async def learned_word(request: Request) -> Response:
                 await word.update(
                     repeat=repeat,
                 )
-    return redirect(
-        request.url_for('learn:index')
+
+    return RedirectResponse(
+        request.url_for('learn:index'),
+        status_code=HTTPStatus.MOVED_PERMANENTLY,
     )

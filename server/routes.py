@@ -7,7 +7,7 @@ from server.apps.word.views import (
     word_delete,
     word_create,
 )
-from server.apps.auth.views import login, logout, callback
+from server.apps.auth.views import login, logout, callback, login_page
 from server.apps.learn.views import learn_word, learned_word
 from server.apps.main.views import status
 from server.utils import static_files
@@ -34,6 +34,8 @@ def setup_routes(app: Starlette):
 
         # Auth
         Mount('/auth', name='auth', app=Router([
+            Route('/login-required', endpoint=login_page,
+                  methods=['GET'], name='login_page'),
             Route('/login', endpoint=login,
                   methods=['POST'], name='login'),
             Route('/logout', endpoint=logout,
