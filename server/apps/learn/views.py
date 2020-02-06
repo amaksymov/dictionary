@@ -42,9 +42,6 @@ async def learned_word(request: Request) -> Response:
             Word.objects.filter(
                 repeat__lte=datetime.now()
             )
-            .filter(
-                translate__iexact=None
-            )
             .get(id=word_id)
         )
     except NoMatch:
