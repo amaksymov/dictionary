@@ -11,7 +11,7 @@
     <h1>{{ message }}</h1>
   {% endif %}
   <div class="d-flex justify-content-center">
-    <form class="form-inline my-2 my-lg-0" action="{{ url_for('auth:login') }}" method="POST">
+    <form class="form-inline my-2 my-lg-0" action="{{ url_for('auth:github:login') }}" method="POST">
       <button class="btn btn-link" type="submit">GitHub Login</button>
     </form>
   </div>

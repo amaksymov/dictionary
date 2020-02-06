@@ -30,7 +30,7 @@
             </div>
           </div>
         {% else %}
-          <form class="form-inline my-2 my-lg-0" action="{{ url_for('auth:login') }}" method="POST">
+          <form class="form-inline my-2 my-lg-0" action="{{ url_for('auth:github:login') }}" method="POST">
             <button class="btn btn-link" type="submit">Login</button>
           </form>
         {% endif %}

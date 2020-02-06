@@ -1,3 +1,4 @@
+from typing import Dict
 from http import HTTPStatus
 
 from orm import NoMatch
@@ -14,7 +15,7 @@ from server.apps.word.models import Word
 @LoginRequired()
 async def word_form(request: Request) -> Response:
     form = forms.Form(WordForm)
-    errors = {}
+    errors: Dict[str, str] = {}
 
     words = await Word.objects.all()
 

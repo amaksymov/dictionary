@@ -11,7 +11,8 @@ SESSION_MAX_AGE = config('SESSION_MAX_AGE', cast=int, default=5 * 24 * 60 * 60)
 SESSION_NAME = config('SESSION_NAME', cast=str, default='session')
 
 GITHUB_URL = config('GITHUB_URL', cast=str, default='https://github.com/')
-GITHUB_API_URL = config('GITHUB_API_URL', cast=str, default='https://api.github.com/')
+GITHUB_API_URL = config('GITHUB_API_URL', cast=str,
+                        default='https://api.github.com/')
 GITHUB_AUTH_URL = config('GITHUB_AUTH_URL', cast=str,
                          default='https://github.com/login/oauth/authorize')
 GITHUB_CLIENT_ID = config('GITHUB_CLIENT_ID', cast=str)
