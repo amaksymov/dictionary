@@ -12,7 +12,7 @@ from server.apps.learn.forms import ANSWERS
 from server.apps.learn.models import AnswerHistory
 from server.apps.word.models import Word
 from server.utils.auth import LoginRequired
-from server.utils import templates, forms
+from server.utils import templates
 
 
 @LoginRequired()
@@ -38,7 +38,15 @@ async def learned_word(request: Request) -> Response:
     word_id = request.path_params.get('word_id')
 
     try:
-        word = await Word.objects.get(id=word_id)
+        word = await (
+            Word.objects.filter(
+                repeat__lte=datetime.now()
+            )
+            .filter(
+                translate__iexact=None
+            )
+            .get(id=word_id)
+        )
     except NoMatch:
         raise HTTPException(HTTPStatus.NOT_FOUND)
 
@@ -51,7 +59,6 @@ async def learned_word(request: Request) -> Response:
             answers = await (
                 AnswerHistory.objects.filter(word__id=word.id).all()
             )
-            print(answers)
             repeat = get_next_repeat(answers)
             await word.update(
                 repeat=repeat,
