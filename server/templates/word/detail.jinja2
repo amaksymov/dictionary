@@ -1,0 +1,23 @@
+{% extends "base.jinja2" %}
+{% block title %}{{ entity.word.value }}{% endblock %}
+
+{% block content %}
+  <div>
+    <h4>
+      {{ entity.word.value }}
+    </h4>
+    {% for k, v in entity.translates.items() %}
+      {% if v %}
+        <b>
+          {{ k.value }}:
+        </b>
+        {{ ', '.join(v) }}
+        <br>
+      {% endif %}
+    {% endfor %}
+    <div style="margin-top: 1em">
+      {% set word = entity.word %}
+      {% include 'word/delete.jinja2' %}
+    </div>
+  </div>
+{% endblock %}
