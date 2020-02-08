@@ -7,9 +7,11 @@ from starlette.exceptions import HTTPException
 from starlette.responses import Response, RedirectResponse
 from starlette.requests import Request
 
+from server.apps.dictionary.bl import get_entity
 from server.apps.learn.bl import get_next_repeat
 from server.apps.learn.forms import ANSWERS
 from server.apps.learn.models import AnswerHistory
+from server.apps.translate.models import Translate
 from server.apps.word.models import Word
 from server.utils.auth import LoginRequired
 from server.utils import templates
@@ -24,10 +26,12 @@ async def learn_word(request: Request) -> Response:
 
     if words:
         word = choice(words)
+        translates = await Translate.objects.filter(word__id=word.id).all()
+        entity = get_entity(word, translates)
     else:
-        word = None
+        entity = None
     return templates.TemplateResponse('learn/index.jinja2', {
-        'word': word,
+        'entity': entity,
         'answers': ANSWERS,
         'request': request,
     })

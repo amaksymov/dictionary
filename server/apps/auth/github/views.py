@@ -3,6 +3,7 @@ from http import HTTPStatus
 
 import httpx
 from orm import NoMatch
+from starlette.exceptions import HTTPException
 from starlette.requests import Request
 from starlette.responses import Response, RedirectResponse
 from starlette.datastructures import URL
@@ -49,6 +50,11 @@ async def callback(request):
     response.raise_for_status()
     data = response.json()
 
+    # Check user in white list if check on
+    if settings.AUTH_ON_LIST_USER_GITHUB:
+        if data['login'] not in settings.AUTH_ALLOW_USERS_GITHUB:
+            raise HTTPException(HTTPStatus.FORBIDDEN)
+
     # Log the user in, and redirect back to the homepage.
     try:
         user = await User.objects.get(github_id=data['id'])
@@ -63,7 +69,6 @@ async def callback(request):
         values = {
             'username': data['login'],
             'github_id': data['id'],
-            'is_admin': True,
             'avatar_url': data['avatar_url'],
         }
         user = await User.objects.create(**values)

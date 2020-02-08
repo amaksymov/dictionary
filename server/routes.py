@@ -3,7 +3,7 @@ from starlette.routing import Mount, Route, Router
 
 from server.apps.word.views import (
     word_form,
-    word_edit,
+    word_detail,
     word_delete,
     word_create,
 )
@@ -26,8 +26,8 @@ def setup_routes(app: Starlette):
         Mount('/w', name='word', app=Router([
             Route('/create', endpoint=word_create,
                   methods=['GET', 'POST'], name='create'),
-            Route('/{word_id:int}/edit', endpoint=word_edit,
-                  methods=['GET', 'POST'], name='edit'),
+            Route('/{word_id:int}/detail', endpoint=word_detail,
+                  methods=['GET'], name='detail'),
             Route('/{word_id:int}/delete', endpoint=word_delete,
                   methods=['POST'], name='delete'),
         ])),

@@ -8,18 +8,26 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">{{ word.value }}</h5>
+        <h5 class="modal-title" id="exampleModalLabel">{{ entity.word.value }}</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-        {{ word.translate }}
+        {% for k, v in entity.translates.items() %}
+          {% if v %}
+            <b>
+              {{ k.value }}:
+            </b>
+            {{ ', '.join(v) }}
+            <br>
+          {% endif %}
+        {% endfor %}
       </div>
       <div class="d-flex justify-content-center modal-footer">
         <div class="d-flex justify-content-center flex-column bd-highlight mb-3">
           {% for a in answers[::-1] %}
-            <a href="{{ url_for('learn:learned', word_id=word.id, answer=a.answer) }}" class="btn btn-{{ a.btn_type.value }} btn-lg active" role="button" aria-pressed="true" style="margin: 0.1em">{{ a.text }}</a>
+            <a href="{{ url_for('learn:learned', word_id=entity.word.id, answer=a.answer) }}" class="btn btn-{{ a.btn_type.value }} btn-lg active" role="button" aria-pressed="true" style="margin: 0.1em">{{ a.text }}</a>
           {% endfor %}
         </div>
       </div>

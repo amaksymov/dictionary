@@ -7,13 +7,23 @@
   </tr>
   </thead>
   <tbody>
-  {% for word in words %}
+  {% for word, translates in dictionary %}
     <tr>
       <th scope="row">
-        <a class="" href="{{ url_for('word:edit', word_id=word.id) }}">{{ word.id }}</a>
+        <a class="" href="{{ url_for('word:detail', word_id=word.id) }}">{{ word.id }}</a>
       </th>
       <td>{{ word.value }}</td>
-      <td>{{ word.translate }}</td>
+      <td>
+        {% for k, v in translates.items() %}
+          {% if v %}
+            <b>
+              {{ k.value }}:
+            </b>
+            {{ ', '.join(v) }}
+            <br>
+          {% endif %}
+        {% endfor %}
+      </td>
     </tr>
   {% else %}
     <tr>
