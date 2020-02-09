@@ -20,6 +20,7 @@ class PartOfSpeechEnum(Enum):
     interjection = 'interjection'
     article = 'article'
     participle = 'participle'
+    predicative = 'predicative'
 
 
 class Translate(models.Model):
