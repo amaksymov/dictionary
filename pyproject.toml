@@ -15,7 +15,7 @@ databases = {extras = ["postgres"], version = "^0.2.6"}
 orm = "^0.1.5"
 asyncpg = "^0.20.1"
 aiofiles = "^0.4.0"
-jinja2 = "^2.11.1"
+jinja2 = "^2.11.3"
 psycopg2-binary = "^2.8.4"
 python-multipart = "^0.0.5"
 requests = "^2.22.0"
